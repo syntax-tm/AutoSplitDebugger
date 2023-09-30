@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="AutoSplitDebugger.Views.StatusBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:viewModels="clr-namespace:AutoSplitDebugger.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignData Type={x:Type viewModels:MainWindowViewModel}}">
+    
+    <UserControl.Resources>
+        <dxmvvm:BooleanToObjectConverter x:Key="IsConnectedToStringConverter" TrueValue="Connected" FalseValue="Disconnected" />
+        <dxmvvm:BooleanToObjectConverter x:Key="IsRunningToStringConverter" TrueValue="Running" FalseValue="Stopped" />
+
+        
+        <Style x:Key="DefaultStatusBarItemStyle" TargetType="{x:Type StatusBarItem}">
+            <Setter Property="Opacity" Value="0.6" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource DefaultStatusBarItemStyle}">
+
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <StatusBar Padding="10">
+            <StatusBarItem Content="{Binding Pointers.Count}" ContentStringFormat="{}Pointers: {0}" />
+            <Separator />
+            <ui:Button Command="{Binding ToggleWorkerCommand}">
+                <ui:Button.Style>
+                    <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="2" />
+                        <Setter Property="Content" Value="Start" />
+                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                        <Setter Property="Icon" Value="Play20" />
+                        <Setter Property="IconFilled" Value="False" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IconFilled" Value="True" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsRunning, Mode=OneWay}" Value="True">
+                                <Setter Property="Content" Value="Stop" />
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                <Setter Property="Icon" Value="Stop20" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:Button.Style>
+            </ui:Button>
+            <Separator />
+            <ui:Button Command="{Binding SuspendOrResumeProcessCommand}">
+                <ui:Button.Style>
+                    <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="2" />
+                        <Setter Property="IconFilled" Value="False" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IconFilled" Value="True" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsSuspended}" Value="False">
+                                <Setter Property="Content" Value="Running" />
+                                <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                <Setter Property="Icon" Value="Play20" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSuspended}" Value="True">
+                                <Setter Property="Content" Value="Suspended" />
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                <Setter Property="Icon" Value="Pause20" />
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+                                    <Condition Binding="{Binding IsSuspended}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Content" Value="Resume" />
+                                <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                <Setter Property="Icon" Value="Play20" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+                                    <Condition Binding="{Binding IsSuspended}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Content" Value="Suspend" />
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                <Setter Property="Icon" Value="Pause20" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:Button.Style>
+            </ui:Button>
+            <StatusBarItem Content="{Binding SelectedPointer.Name, Mode=OneWay}" ContentStringFormat="{}Selected: {0}" />
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <StatusBarItem Content="{Binding IsAttached, Converter={StaticResource IsConnectedToStringConverter}}">
+                        <StatusBarItem.Style>
+                            <Style TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource DefaultStatusBarItemStyle}">
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAttached}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StatusBarItem.Style>
+                    </StatusBarItem>
+                    <Separator Margin="5,0" />
+                    <StatusBarItem Content="{Binding IsRunning, Converter={StaticResource IsRunningToStringConverter}}">
+                        <StatusBarItem.Style>
+                            <Style TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource DefaultStatusBarItemStyle}">
+                                <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StatusBarItem.Style>
+                    </StatusBarItem>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</UserControl>

@@ -1,0 +1,507 @@
+{
+  "process": "re5dx9",
+  "valueSources": [
+    {
+      "$id": "Levels",
+      "type": "byte",
+      "map": {
+        "0": "Chapter 1-1",
+        "1": "Chapter 1-2",
+        "2": "Chapter 2-1",
+        "3": "Chapter 2-2",
+        "4": "Chapter 2-3",
+        "5": "Chapter 3-1",
+        "6": "Chapter 3-2",
+        "7": "Chapter 3-3",
+        "8": "Chapter 4-1",
+        "9": "Chapter 4-2",
+        "10": "Chapter 5-1",
+        "11": "Chapter 5-2",
+        "12": "Chapter 5-3",
+        "13": "Chapter 6-1",
+        "14": "Chapter 6-2",
+        "15": "Chapter 6-3"
+      }
+    },
+    {
+      "$id": "menu",
+      "type": "byte",
+      "map": {
+        "1": "Main Menu",
+        "3": "In Shop",
+        "6": "In-Game"
+      }
+    },
+    {
+      "$id": "isPaused",
+      "type": "byte",
+      "map": {
+        "0": "No",
+        "8": "Yes"
+      }
+    },
+    {
+      "$id": "YesNo",
+      "type": "byte",
+      "map": {
+        "0": "No",
+        "1": "Yes"
+      }
+    },
+    {
+      "$id": "PauseBuff",
+      "type": "float",
+      "map": {
+        "0": "In Shop",
+        "0.5": "Paused (In-Game)",
+        "1": "Cutscene"
+      }
+    },
+    {
+      "$id": "items",
+      "type": "int",
+      "map": {
+        "0": "Nothing / Empty",
+        "98": "Shield",
+        "123": "(dummy_wp7a)",
+        "222": "Score star (Medium)",
+        "256": "Hand-to-Hand",
+        "257": "Chris Knife",
+        "258": "M92F",
+        "259": "VZ61",
+        "260": "Ithaca M37",
+        "261": "S75",
+        "262": "Hand Grenade",
+        "263": "Incendiary Grenade",
+        "264": "Flash Grenade",
+        "265": "SIG 556",
+        "266": "Proximity Bomb",
+        "267": "S&W M29",
+        "269": "Rocket Launcher",
+        "270": "Sheva's Knife",
+        "271": "Longbow",
+        "272": "H&K P8",
+        "273": "SIG P226",
+        "274": "Samurai Edge (DLC)",
+        "275": "H&K MP5",
+        "276": "dummy_wp14",
+        "277": "Gatling Gun",
+        "278": "M3",
+        "279": "Jail Breaker",
+        "280": "dummy_wp18",
+        "281": "Hydra",
+        "282": "Lightning Hawk",
+        "283": "S&W M500",
+        "284": "H&K PSG-1",
+        "285": "AK-74",
+        "286": "M93R",
+        "287": "Px4",
+        "288": "Dragunov SVD",
+        "289": "Flamethrower",
+        "290": "Stun Rod",
+        "291": "Wesker's Knife",
+        "292": "Jill's Knife",
+        "293": "Grenade Launcher (EXP)",
+        "294": "Grenade Launcher (ACID)",
+        "295": "Grenade Launcher (ICE)",
+        "296": "dummy_wp28",
+        "297": "Samurai Edge",
+        "298": "dummy_wp2a",
+        "299": "dummy_wp2b",
+        "300": "Gun turret (dummy_wp2d)",
+        "301": "PKM Light Mac (dummy_wp2d)",
+        "302": "Minigun (dummy_wp2e)",
+        "303": "Gun Turret",
+        "304": "Lantern",
+        "305": "dummy_wp31",
+        "306": "dummy_wp32 (Bullet Sound)",
+        "307": "dummy_wp32 (Bullet Sound)",
+        "308": "L.T.D",
+        "309": "RPG-7 NVS",
+        "310": "Egg (Rotten)",
+        "311": "Hand-to-hand (Special Walk Animation)",
+        "312": "Infinite Rocket Launcher (dummy_wp38)",
+        "313": "Grenade Launcher (FLM)",
+        "314": "Grenade Launcher (FLS)",
+        "315": "Grenade Launcher (ELC)",
+        "316": "Egg (White)",
+        "317": "Egg (Brown)",
+        "318": "Egg (Gold)",
+        "319": "dummy_wp3f (L.T.D. Effect)",
+        "320": "dummy_wp40 (Launch Explosive)",
+        "321": "dummy_wp41 (Launch Acid)",
+        "322": "dummy_wp42 (Launch Nitrogen)",
+        "323": "dummy_wp43",
+        "324": "dummy_wp44 (Launch Rocket)",
+        "325": "dummy_wp45",
+        "326": "dummy_wp46",
+        "327": "dummy_wp47",
+        "328": "dummy_wp48",
+        "329": "dummy_wp49",
+        "330": "dummy_wp4a",
+        "331": "dummy_wp4b (Launch Rocket)",
+        "332": "dummy_wp4c (Launch Rocket)",
+        "333": "dummy_wp4d (Launch Flame)",
+        "334": "dummy_wp4e (Launch Flash)",
+        "335": "dummy_wp4f (Launch Electric)",
+        "336": "Adze",
+        "337": "Sickle",
+        "338": "Bow gun (Thrown)",
+        "339": "Shovel (Thrown)",
+        "340": "Dynamite (Thrown)",
+        "341": "Machete",
+        "342": "Shotgun",
+        "343": "Grenade Launcher (Thrown)",
+        "344": "Giant Axe (Thrown)",
+        "345": "Steel Pipe (Thrown)",
+        "346": "Bottle",
+        "347": "Chainsaw",
+        "348": "dummy_wp5c (Molotov Cocktail)",
+        "349": "Gatling Gun",
+        "350": "Torch",
+        "351": "Spear",
+        "352": "Wooden Shield",
+        "353": "Metal Shield",
+        "354": "Bow",
+        "355": "Shield",
+        "356": "Mooring Star",
+        "357": "Stun Rod",
+        "358": "Knife",
+        "359": "Handgun",
+        "360": "Rocket Launcher",
+        "361": "Adze",
+        "362": "Machine Gun",
+        "363": "Rifle",
+        "364": "Molotov Cocktail",
+        "365": "Hand Grenade",
+        "366": "Flash Grenade",
+        "367": "Spear",
+        "368": "Chair",
+        "369": "Pickaxe",
+        "370": "Club",
+        "371": "Wrench",
+        "372": "Bomb",
+        "373": "Megaphone",
+        "374": "Machine Gun",
+        "375": "dummy_wp77 (Axe w/ Fire)",
+        "376": "dummy_wp78 (Rock)",
+        "377": "dummy_wp79 (Fog)",
+        "378": "dummy_wp7a (Gasoline Tank)",
+        "379": "dummy_wp7b",
+        "380": "dummy_wp7c",
+        "381": "dummy_wp7d",
+        "382": "dummy_wp7e",
+        "383": "dummy_wp7f",
+        "384": "dummy_wp80 (Explosive Arrow)",
+        "385": "dummy_wp80 (Fire Arrow)",
+        "386": "dummy_wp82",
+        "387": "dummy_wp83 (Launch Rocket)",
+        "388": "dummy_wp84",
+        "389": "dummy_wp85",
+        "390": "dummy_wp86",
+        "391": "dummy_wp87",
+        "392": "dummy_wp88 (Rocket Launcher)",
+        "393": "dummy_wp89 (Wesker's Samurai Edge)",
+        "394": "dummy_wp8a (Rocket Stopped)",
+        "395": "dummy_wp8b",
+        "396": "dummy_wp8c (Uroboros)",
+        "397": "dummy_wp8d",
+        "398": "dummy_wp8e",
+        "399": "dummy_wp8f",
+        "513": "Handgun Ammo",
+        "514": "Machine Gun Ammo",
+        "515": "Shotgun Ammo",
+        "516": "Rifle Ammo",
+        "517": "(dummy)",
+        "518": "Explosive Rounds",
+        "519": "Acid Rounds",
+        "520": "Nitrogen Rounds",
+        "521": "Magnum Ammo",
+        "522": "Rocket",
+        "523": "Arrow",
+        "524": "(dummy)",
+        "525": "(dummy)",
+        "526": "Flame Rounds",
+        "527": "Flash Rounds",
+        "528": "Electric Rounds",
+        "529": "RPG Round",
+        "575": "L.T.D. Satellite Laser Explosion",
+        "769": "Health",
+        "770": "Herb (Red)",
+        "771": "Herb (Yellow) - Disappear",
+        "772": "First Aid Spray",
+        "773": "Herb (G)",
+        "774": "Herb (R)",
+        "775": "Herb (G+G)",
+        "776": "Herb (G+G+G)",
+        "777": "Herb (G+R)",
+        "778": "Herb (G+Y) - Disappear",
+        "779": "Herb (G+R+Y) - Disappear",
+        "780": "Egg (White)",
+        "781": "Egg (Brown)",
+        "782": "Egg (Gold)",
+        "783": "Nile Perch",
+        "784": "Nile Perch (Big)",
+        "785": "Water",
+        "897": "Blue Enigma",
+        "1025": "Gold (Large)",
+        "1026": "Gold (Small)",
+        "1027": "Gold Bars",
+        "1047": "Gold Ring",
+        "1048": "Dead Bride's Necklace",
+        "1049": "Venom Fang",
+        "1050": "Antique Clock",
+        "1051": "Chalice (Silver)",
+        "1052": "Chalice (Gold)",
+        "1053": "Idol (Silver)",
+        "1054": "Idol (Gold)",
+        "1055": "Ceremonial Mask",
+        "1056": "Ivory Relief",
+        "1057": "Beetle (Brown)",
+        "1058": "Jewel Beetle",
+        "1059": "Royal Necklace",
+        "1060": "Jewel Bangle",
+        "1061": "Beetle (Gold)",
+        "1062": "Beetle (Emerald Green)",
+        "1063": "Score Star (Small)",
+        "1064": "Score Star (Medium)",
+        "1065": "Score Star (Large)",
+        "1104": "Topaz (Pear)",
+        "1105": "Ruby (Pear)",
+        "1106": "Sapphire (Pear)",
+        "1107": "Emerald (Pear)",
+        "1108": "Diamond (Pear)",
+        "1111": "Topaz (Square)",
+        "1112": "Ruby (Square)",
+        "1113": "Sapphire (Square)",
+        "1114": "Emerald (Square)",
+        "1115": "Diamond (Square)",
+        "1118": "Topaz (Oval)",
+        "1119": "Ruby (Oval)",
+        "1120": "Sapphire (Oval)",
+        "1121": "Emerald (Oval)",
+        "1122": "Diamond (Oval)",
+        "1125": "Topaz (Trillant)",
+        "1126": "Ruby (Trillant)",
+        "1127": "Sapphire (Trillant)",
+        "1128": "Emerald (Trillant)",
+        "1129": "Diamond (Trillant)",
+        "1132": "Power Stone",
+        "1133": "Lion Heart",
+        "1134": "Blue Enigma",
+        "1135": "Soul Gem",
+        "1136": "Heart of Africa",
+        "1139": "Topaz (Marquise)",
+        "1140": "Ruby (Marquise)",
+        "1141": "Sapphire (Marquise)",
+        "1142": "Emerald (Marquise)",
+        "1143": "Diamond (Marquise)",
+        "1146": "Topaz (Brillant)",
+        "1147": "Ruby (Brillant)",
+        "1148": "Sapphire (Brillant)",
+        "1149": "Emerald (Brillant)",
+        "1150": "Diamond (Brillant)",
+        "1281": "Punisher's Key",
+        "1282": "Punisher's Key",
+        "1283": "Furnace Key",
+        "1285": "Execution Ground Key",
+        "1286": "Port Key",
+        "1287": "Hangar Keycard A",
+        "1288": "Hangar Keycard B",
+        "1289": "Old Building Key",
+        "1290": "Tanker Keycard A",
+        "1291": "(dummy) (PG67A/W)",
+        "1292": "(dummy) (book?)",
+        "1293": "(dummy) (SD card?)",
+        "1294": "Sky Emblem",
+        "1295": "Earth Emblem",
+        "1296": "Sea Emblem",
+        "1298": "Shaman Slate",
+        "1299": "Warrior Slate",
+        "1300": "Beast Slate",
+        "1301": "Raptor Slate",
+        "1302": "Crane Keycard",
+        "1303": "Tanker Keycard B",
+        "1306": "Guard's Key",
+        "1307": "Bridge Keycard",
+        "1312": "Square Crank",
+        "1313": "Centaur Emblem",
+        "1314": "Password 1",
+        "1315": "Password 2",
+        "1316": "Password 3",
+        "1317": "Jail Key",
+        "1318": "Gold Crest",
+        "1319": "Silver Crest",
+        "1320": "Heat-Sensitive Paper",
+        "1321": "Transport Area Key",
+        "1322": "Emergency Exit Key",
+        "1323": "Sun Eater Serpent Shard",
+        "1324": "Dual-Head Serpent Shard",
+        "1325": "Serpent Tail Shard",
+        "1326": "Tri-Head Serpent Shard",
+        "1327": "Crank (Red)",
+        "1328": "Crank (Blue)",
+        "1329": "Crank (Violet)",
+        "1330": "Crank (Green)",
+        "1537": "Melee Vest",
+        "1542": "Bulletproof Vest",
+        "1543": "Slate Map",
+        "1544": "Combo Bonus"
+      }
+    }
+  ],
+  "pointers": [
+    {
+      "name": "Level",
+      "type": "byte",
+      "format": "{0:N0}",
+      "valueSource": {
+        "$ref": "Levels"
+      },
+      "offsets": [
+        "0xDB2158",
+        "0x273D0"
+      ]
+    },
+    {
+      "name": "areaCode",
+      "type": "byte",
+      "format": "{0:0}",
+      "offsets": [
+        "0xDB2158",
+        "0x273D8"
+      ]
+    },
+    {
+      "name": "IGT",
+      "type": "float",
+      "format": "{0:#,##0.000 s}",
+      "offsets": [
+        "0xDB2158",
+        "0x273F8"
+      ]
+    },
+    {
+      "name": "newCut",
+      "type": "byte",
+      "format": "{0:0}",
+      "offsets": [
+        "0xE34578",
+        "0x984",
+        "0x2EDC",
+        "0x4"
+      ]
+    },
+    {
+      "name": "isPaused",
+      "type": "byte",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "isPaused"
+      },
+      "offsets": [
+        "0xE34578",
+        "0x984",
+        "0x2EDC",
+        "0x3D"
+      ]
+    },
+    {
+      "name": "HP",
+      "type": "ushort",
+      "format": "{0:#,##0}",
+      "offsets": [
+        "0xE340B0",
+        "0xEC",
+        "0x1364"
+      ]
+    },
+    {
+      "name": "QTE",
+      "type": "byte",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "YesNo"
+      },
+      "offsets": [
+        "0xDB1794",
+        "0x338"
+      ]
+    },
+    {
+      "name": "P1ItemID",
+      "type": "int",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "items"
+      },
+      "offsets": [
+        "0xDB1794",
+        "0xEFC"
+      ]
+    },
+    {
+      "name": "P2ItemID",
+      "type": "int",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "items"
+      },
+      "offsets": [
+        "0xDB1794",
+        "0xF78"
+      ]
+    },
+    {
+      "name": "Cutscene",
+      "type": "byte",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "YesNo"
+      },
+      "offsets": [
+        "0xDB1794",
+        "0xDF8"
+      ]
+    },
+    {
+      "name": "menu",
+      "type": "byte",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "menu"
+      },
+      "offsets": [
+        "0xDB26F0",
+        "0x84",
+        "0x4BC",
+        "0x5E4"
+      ]
+    },
+    {
+      "name": "keyItem",
+      "type": "int",
+      "format": "{0:0}",
+      "valueSource": {
+        "$ref": "items"
+      },
+      "offsets": [
+        "0xDB26F0",
+        "0x84",
+        "0x18"
+      ]
+    },
+    {
+      "name": "PauseBuff",
+      "type": "float",
+      "format": "{0:0.#}",
+      "valueSource": {
+        "$ref": "PauseBuff"
+      },
+      "offsets": [
+        "0xDB1D0C",
+        "0x53C"
+      ]
+    }
+  ]
+}

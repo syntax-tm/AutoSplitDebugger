@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="AutoSplitDebugger.Views.PointerGridView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:viewModels="clr-namespace:AutoSplitDebugger.ViewModels"
+             xmlns:interfaces="clr-namespace:AutoSplitDebugger.Interfaces"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type={x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
+    <Grid>
+        <ui:DataGrid ItemsSource="{Binding Pointers, Mode=OneWay}" SelectedItem="{Binding SelectedPointer, Mode=TwoWay}"
+                     CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False"
+                     CanUserResizeRows="False" SelectionMode="Single" RowHeight="28"
+                     RowStyle="{StaticResource DefaultDataGridRowStyle}">
+            <ui:DataGrid.Columns>
+                <DataGridTemplateColumn Header="Name" Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" FontWeight="SemiBold"
+                                           FontFamily="Segoe UI" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Address">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                            Margin="20,0" HorizontalAlignment="Center">
+                                    <TextBlock Text="P->" Opacity="0.5"
+                                               FontFamily="{StaticResource JetBrainsMono}" FontWeight="ExtraLight" />
+                                    <TextBlock Text="{Binding Address, Mode=OneWay, StringFormat='{}{0:X8}', TargetNullValue='?', FallbackValue='?'}" 
+                                               FontFamily="{StaticResource JetBrainsMono}" FontWeight="ExtraLight" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Value" Width="200"
+                                        CellStyle="{StaticResource IsChangedDataGridCellStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
+                            <Grid>
+                                <TextBlock Text="{Binding ValueText, NotifyOnTargetUpdated=True}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" FontWeight="ExtraLight"
+                                           Margin="10,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="FontFamily" Value="{StaticResource JetBrainsMono}" />
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasValueSource}" Value="False">
+                                                    <Setter Property="FontFamily" Value="{StaticResource JetBrainsMono}" />
+                                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Display" Width="250"
+                                        CellStyle="{StaticResource IsChangedDataGridCellStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
+                            <Grid>
+                                <TextBlock Text="{Binding DisplayText, NotifyOnTargetUpdated=True}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                           Margin="10,0" HorizontalAlignment="Left"
+                                           FontFamily="Segoe UI">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DisplayText}" Value="No">
+                                                    <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding DisplayText}" Value="Yes">
+                                                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </ui:DataGrid.Columns>
+        </ui:DataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,163 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AutoSplitDebugger.csproj.DotSettings" />
+    <None Remove="Fonts\JetBrainsMono-Bold.ttf" />
+    <None Remove="Fonts\JetBrainsMono-BoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-ExtraBold.ttf" />
+    <None Remove="Fonts\JetBrainsMono-ExtraBoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-ExtraLight.ttf" />
+    <None Remove="Fonts\JetBrainsMono-ExtraLightItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-Italic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-Light.ttf" />
+    <None Remove="Fonts\JetBrainsMono-LightItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-Medium.ttf" />
+    <None Remove="Fonts\JetBrainsMono-MediumItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-SemiBold.ttf" />
+    <None Remove="Fonts\JetBrainsMono-SemiBoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMono-Thin.ttf" />
+    <None Remove="Fonts\JetBrainsMono-ThinItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-Bold.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-BoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-ExtraBold.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-ExtraBoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-ExtraLight.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-ExtraLightItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-Italic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-Light.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-LightItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-Medium.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-MediumItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-SemiBold.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-SemiBoldItalic.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-Thin.ttf" />
+    <None Remove="Fonts\JetBrainsMonoNL-ThinItalic.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\JetBrainsMono-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-ExtraBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-ExtraLight.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-ExtraLightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-MediumItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-SemiBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-SemiBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-Thin.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMono-ThinItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-ExtraBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-ExtraLight.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-ExtraLightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-MediumItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-SemiBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-SemiBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-Thin.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\JetBrainsMonoNL-ThinItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpressMvvm" Version="22.1.3" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="WPF-UI" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
