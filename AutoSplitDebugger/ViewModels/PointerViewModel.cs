@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Timers;
 using AutoSplitDebugger.Config;
 using AutoSplitDebugger.Interfaces;
+using AutoSplitDebugger.Models;
 using DevExpress.Mvvm.POCO;
 using JetBrains.Annotations;
 using log4net;
@@ -62,6 +63,11 @@ namespace AutoSplitDebugger.ViewModels
             return ViewModelSource.Create(() => new PointerViewModel<T>(memory, config));
         }
 
+        public IPointerSnapshot CreateSnapshot()
+        {
+            return new PointerSnapshot<T>(Value, DisplayText);
+        }
+
         public void Refresh()
         {
             Address ??= _memory.ResolvePath(PointerPath);
@@ -69,15 +75,6 @@ namespace AutoSplitDebugger.ViewModels
             var value = _memory.ReadMemory<T>(Address.Value);
 
             Value = value;
-        }
-
-        private void ChangedTimerOnElapsed(object sender, ElapsedEventArgs e)
-        {
-            IsChanged = false;
-
-            _changedTimer.Elapsed -= ChangedTimerOnElapsed;
-            _changedTimer.Dispose();
-            _changedTimer = null;
         }
 
         [UsedImplicitly]
@@ -116,6 +113,15 @@ namespace AutoSplitDebugger.ViewModels
             _changedTimer = new (TimeSpan.FromSeconds(1));
             _changedTimer.Elapsed += ChangedTimerOnElapsed;
             _changedTimer.Start();
+        }
+        
+        private void ChangedTimerOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            IsChanged = false;
+
+            _changedTimer.Elapsed -= ChangedTimerOnElapsed;
+            _changedTimer.Dispose();
+            _changedTimer = null;
         }
     }
 }

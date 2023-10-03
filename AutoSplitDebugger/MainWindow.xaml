@@ -8,16 +8,94 @@
         xmlns:views="clr-namespace:AutoSplitDebugger.Views"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}"
-        Title="{Binding WindowTitle, Mode=OneWay}"
         Topmost="True" ExtendsContentIntoTitleBar="True"
         Width="800" Height="600"
         WindowCornerPreference="DoNotRound">
 
+    <ui:UiWindow.Resources>
+        <Style x:Key="MenuItemBaseStyle" TargetType="{x:Type ui:MenuItem}" BasedOn="{StaticResource {x:Type ui:MenuItem}}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="SymbolIconFilled" Value="True" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </ui:UiWindow.Resources>
+
     <Grid>
         <DockPanel LastChildFill="True">
             <ui:TitleBar DockPanel.Dock="Top" Title="{Binding WindowTitle}" />
+            <!--<ui:NavigationCompact DockPanel.Dock="Left">
+                <ui:NavigationCompact.Items>
+                    <ui:NavigationItem Content="Home" Icon="Home24" />
+                    <ui:NavigationItem Content="Process">
+                        <ui:NavigationItem.Style>
+                            <Style TargetType="{x:Type ui:NavigationItem}">
+                                <Setter Property="Icon" Value="Play24" />
+                                <Setter Property="IconForeground" Value="{StaticResource GreenBrush}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="IconFilled" Value="True" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsSuspended}" Value="True">
+                                        <Setter Property="Icon" Value="Pause24" />
+                                        <Setter Property="IconForeground" Value="{StaticResource RedBrush}" />
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+                                            <Condition Binding="{Binding IsSuspended}" Value="False" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Icon" Value="Pause24" />
+                                        <Setter Property="IconForeground" Value="{StaticResource YellowBrush}" />
+                                        <Setter Property="ToolTip" Value="Suspend process." />
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+                                            <Condition Binding="{Binding IsSuspended}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Icon" Value="Play24" />
+                                        <Setter Property="IconForeground" Value="{StaticResource GreenBrush}" />
+                                        <Setter Property="ToolTip" Value="Resume process." />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:NavigationItem.Style>
+                    </ui:NavigationItem>
+                </ui:NavigationCompact.Items>
+                <ui:NavigationCompact.Footer>
+                    <ui:NavigationSeparator />
+                    <ui:NavigationItem Content="Help" Icon="Question24" />
+                </ui:NavigationCompact.Footer>
+            </ui:NavigationCompact>-->
             <views:StatusBarView DockPanel.Dock="Bottom" />
-            <views:PointerGridView />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Menu>
+                    <ui:MenuItem Header="File">
+                        <ui:MenuItem Header="Open Config">
+                            <ui:MenuItem.Style>
+                                <Style TargetType="{x:Type ui:MenuItem}" BasedOn="{StaticResource MenuItemBaseStyle}">
+                                    <Setter Property="SymbolIcon" Value="Folder24" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="SymbolIcon" Value="FolderOpen24" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:MenuItem.Style>
+                        </ui:MenuItem>
+                    </ui:MenuItem>
+                    <ui:MenuItem Header="Help">
+                        <ui:MenuItem Header="About" SymbolIcon="Question24" />
+                    </ui:MenuItem>
+                </Menu>
+                <views:PointerGridView Grid.Row="1" />
+            </Grid>
         </DockPanel>
     </Grid>
 </ui:UiWindow>

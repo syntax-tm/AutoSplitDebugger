@@ -14,7 +14,6 @@
         <dxmvvm:BooleanToObjectConverter x:Key="IsConnectedToStringConverter" TrueValue="Connected" FalseValue="Disconnected" />
         <dxmvvm:BooleanToObjectConverter x:Key="IsRunningToStringConverter" TrueValue="Running" FalseValue="Stopped" />
 
-        
         <Style x:Key="DefaultStatusBarItemStyle" TargetType="{x:Type StatusBarItem}">
             <Setter Property="Opacity" Value="0.6" />
             <Style.Triggers>
@@ -32,6 +31,18 @@
     <Grid>
         <StatusBar Padding="10">
             <StatusBarItem Content="{Binding Pointers.Count}" ContentStringFormat="{}Pointers: {0}" />
+            <Separator>
+                <Separator.Style>
+                    <Style TargetType="{x:Type Separator}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedPointer}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Separator.Style>
+            </Separator>
+            <StatusBarItem Content="{Binding SelectedPointer.Name, Mode=OneWay}" ContentStringFormat="{}Selected: {0}" />
             <Separator />
             <ui:Button Command="{Binding ToggleWorkerCommand}">
                 <ui:Button.Style>
@@ -56,7 +67,6 @@
                     </Style>
                 </ui:Button.Style>
             </ui:Button>
-            <Separator />
             <ui:Button Command="{Binding SuspendOrResumeProcessCommand}">
                 <ui:Button.Style>
                     <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
@@ -68,6 +78,9 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="IconFilled" Value="True" />
                             </Trigger>
+                            <DataTrigger Binding="{Binding IsRunning}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding IsSuspended}" Value="False">
                                 <Setter Property="Content" Value="Running" />
                                 <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
@@ -100,7 +113,23 @@
                     </Style>
                 </ui:Button.Style>
             </ui:Button>
-            <StatusBarItem Content="{Binding SelectedPointer.Name, Mode=OneWay}" ContentStringFormat="{}Selected: {0}" />
+            <Separator />
+            <ui:Button Content="Snapshot">
+                <ui:Button.Style>
+                    <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="2" />
+                        <Setter Property="IconFilled" Value="False" />
+                        <Setter Property="Icon" Value="Camera24" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IconFilled" Value="True" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:Button.Style>
+            </ui:Button>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <StatusBarItem Content="{Binding IsAttached, Converter={StaticResource IsConnectedToStringConverter}}">

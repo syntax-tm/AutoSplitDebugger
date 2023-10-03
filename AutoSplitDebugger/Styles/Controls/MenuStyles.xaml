@@ -2,15 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="http://schemas.lepo.co/wpfui/2022/xaml">
 
-    <Style x:Key="UiMenuItemScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}"
+    <!--<Style x:Key="UiMenuItemScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}"
            TargetType="{x:Type ScrollViewer}">
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
     </Style>
 
-    <!--
+    --><!--
         DEFAULT WPF MENU ITEM
-    -->
+    --><!--
 
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="{x:Type Separator}">
         <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
@@ -33,7 +33,7 @@
         </Setter>
     </Style>
 
-    <!--  TopLevelHeader  -->
+    --><!--  TopLevelHeader  --><!--
     <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="{x:Type MenuItem}">
         <Border x:Name="Border"
                 Margin="0"
@@ -140,7 +140,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  TopLevelItem  -->
+    --><!--  TopLevelItem  --><!--
     <ControlTemplate x:Key="{x:Static MenuItem.TopLevelItemTemplateKey}" TargetType="{x:Type MenuItem}">
         <Border x:Name="Border"
                 Background="Transparent">
@@ -186,7 +186,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  SubmenuItem  -->
+    --><!--  SubmenuItem  --><!--
     <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="{x:Type MenuItem}">
         <Border x:Name="Border"
                 Background="Transparent">
@@ -267,7 +267,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  SubItem with Subitems  -->
+    --><!--  SubItem with Subitems  --><!--
     <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="{x:Type MenuItem}">
         <Grid>
             <Grid.RowDefinitions>
@@ -350,10 +350,10 @@
                     </Setter.Value>
                 </Setter>
             </Trigger>
-            <!--<Trigger SourceName="Popup" Property="AllowsTransparency" Value="True">
+            --><!--<Trigger SourceName="Popup" Property="AllowsTransparency" Value="True">
                 <Setter TargetName="SubmenuBorder" Property="CornerRadius" Value="4" />
                 <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,3,0,3" />
-            </Trigger>-->
+            </Trigger>--><!--
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground">
                     <Setter.Value>
@@ -413,11 +413,11 @@
         BasedOn="{StaticResource UiMenuItem}"
         TargetType="{x:Type MenuItem}" />
 
-    <!--
+    --><!--
         WPF UI MENU ITEM
     -->
 
-    <!--  TopLevelHeader  -->
+    <!--  TopLevelHeader  --><!--
     <ControlTemplate x:Key="WpfUiMenuItemTopLevelHeaderTemplateKey" TargetType="{x:Type controls:MenuItem}">
         <Border x:Name="Border"
                 Background="Transparent">
@@ -525,7 +525,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  TopLevelItem  -->
+    --><!--  TopLevelItem  --><!--
     <ControlTemplate x:Key="WpfUiMenuItemTopLevelItemTemplateKey" TargetType="{x:Type controls:MenuItem}">
         <Border x:Name="Border"
                 Margin="{TemplateBinding Margin}"
@@ -577,7 +577,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  SubmenuItem  -->
+    --><!--  SubmenuItem  --><!--
     <ControlTemplate x:Key="WpfUiMenuItemSubmenuItemTemplateKey" TargetType="{x:Type controls:MenuItem}">
         <Border x:Name="Border"
                 Margin="4,1"
@@ -665,7 +665,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  SubItem with Subitems  -->
+    --><!--  SubItem with Subitems  --><!--
     <ControlTemplate x:Key="WpfUiMenuItemSubmenuHeaderTemplateKey" TargetType="{x:Type controls:MenuItem}">
         <Grid>
             <Grid.RowDefinitions>
@@ -753,10 +753,10 @@
                     </Setter.Value>
                 </Setter>
             </Trigger>
-            <!--<Trigger SourceName="Popup" Property="AllowsTransparency" Value="True">
+            --><!--<Trigger SourceName="Popup" Property="AllowsTransparency" Value="True">
                 <Setter TargetName="SubmenuBorder" Property="CornerRadius" Value="4" />
                 <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,3,0,3" />
-            </Trigger>-->
+            </Trigger>--><!--
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground">
                     <Setter.Value>
@@ -789,7 +789,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  MenuItem Style  -->
+    --><!--  MenuItem Style  --><!--
     <Style x:Key="DefaultWpfUiMenuItem" TargetType="{x:Type controls:MenuItem}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
@@ -812,5 +812,5 @@
         </Style.Triggers>
     </Style>
 
-    <Style BasedOn="{StaticResource DefaultWpfUiMenuItem}" TargetType="{x:Type controls:MenuItem}" />
+    <Style BasedOn="{StaticResource DefaultWpfUiMenuItem}" TargetType="{x:Type controls:MenuItem}" />-->
 </ResourceDictionary>
