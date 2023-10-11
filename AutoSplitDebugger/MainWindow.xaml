@@ -25,50 +25,6 @@
     <Grid>
         <DockPanel LastChildFill="True">
             <ui:TitleBar DockPanel.Dock="Top" Title="{Binding WindowTitle}" />
-            <!--<ui:NavigationCompact DockPanel.Dock="Left">
-                <ui:NavigationCompact.Items>
-                    <ui:NavigationItem Content="Home" Icon="Home24" />
-                    <ui:NavigationItem Content="Process">
-                        <ui:NavigationItem.Style>
-                            <Style TargetType="{x:Type ui:NavigationItem}">
-                                <Setter Property="Icon" Value="Play24" />
-                                <Setter Property="IconForeground" Value="{StaticResource GreenBrush}" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="IconFilled" Value="True" />
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding IsSuspended}" Value="True">
-                                        <Setter Property="Icon" Value="Pause24" />
-                                        <Setter Property="IconForeground" Value="{StaticResource RedBrush}" />
-                                    </DataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
-                                            <Condition Binding="{Binding IsSuspended}" Value="False" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Icon" Value="Pause24" />
-                                        <Setter Property="IconForeground" Value="{StaticResource YellowBrush}" />
-                                        <Setter Property="ToolTip" Value="Suspend process." />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
-                                            <Condition Binding="{Binding IsSuspended}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Icon" Value="Play24" />
-                                        <Setter Property="IconForeground" Value="{StaticResource GreenBrush}" />
-                                        <Setter Property="ToolTip" Value="Resume process." />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:NavigationItem.Style>
-                    </ui:NavigationItem>
-                </ui:NavigationCompact.Items>
-                <ui:NavigationCompact.Footer>
-                    <ui:NavigationSeparator />
-                    <ui:NavigationItem Content="Help" Icon="Question24" />
-                </ui:NavigationCompact.Footer>
-            </ui:NavigationCompact>-->
             <views:StatusBarView DockPanel.Dock="Bottom" />
             <Grid>
                 <Grid.RowDefinitions>

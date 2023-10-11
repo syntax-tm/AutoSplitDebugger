@@ -13,19 +13,6 @@
     <UserControl.Resources>
         <dxmvvm:BooleanToObjectConverter x:Key="IsConnectedToStringConverter" TrueValue="Connected" FalseValue="Disconnected" />
         <dxmvvm:BooleanToObjectConverter x:Key="IsRunningToStringConverter" TrueValue="Running" FalseValue="Stopped" />
-
-        <Style x:Key="DefaultStatusBarItemStyle" TargetType="{x:Type StatusBarItem}">
-            <Setter Property="Opacity" Value="0.6" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value="0.9" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource DefaultStatusBarItemStyle}">
-
-        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -114,7 +101,7 @@
                 </ui:Button.Style>
             </ui:Button>
             <Separator />
-            <ui:Button Content="Snapshot">
+            <ui:Button Content="Snapshot" Command="{Binding CreateSnapshotCommand}">
                 <ui:Button.Style>
                     <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource DefaultUiButtonStyle}">
                         <Setter Property="BorderBrush" Value="Transparent" />

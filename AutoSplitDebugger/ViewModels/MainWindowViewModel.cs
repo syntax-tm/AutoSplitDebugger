@@ -59,6 +59,11 @@ public class MainWindowViewModel
         return ViewModelSource.Create(() => new MainWindowViewModel());
     }
 
+    public void CreateSnapshot()
+    {
+
+    }
+
     public void SuspendOrResumeProcess()
     {
         try
