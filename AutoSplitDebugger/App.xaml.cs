@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using DevExpress.Mvvm;
 using log4net;
 using log4net.Config;
@@ -20,7 +21,15 @@ public partial class App
 
             ServiceContainer.Default.RegisterService("SnackbarService", new SnackbarService());
 
-            var window = new MainWindow();
+            var iconUri = new Uri(@"/Resources/Images/asl_debugger_light.png", UriKind.Relative);
+            var resourceInfo = GetResourceStream(iconUri);
+            using var stream = resourceInfo!.Stream;
+            var bmp = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+
+            var window = new MainWindow
+            {
+                Icon = bmp
+            };
 
             MainWindow = window;
 

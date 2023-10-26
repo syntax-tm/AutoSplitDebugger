@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using AutoSplitDebugger.Interfaces;
 using DevExpress.Mvvm;
+using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Controls.Interfaces;
@@ -128,8 +129,8 @@ public class SnackbarWindowService : WindowAwareServiceBase, ISnackbarWindowServ
 
     protected override void OnActualWindowChanged(Window oldWindow)
     {
-        oldWindow.Closing -= OnClosing;
-        ActualWindow.Closing += OnClosing;
+        oldWindow.Do(w => w.Closing -= OnClosing);
+        ActualWindow.Do(w => w.Closing += OnClosing);
     }
 
     private void OnClosing(object sender, CancelEventArgs e)

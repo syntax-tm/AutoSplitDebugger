@@ -42,6 +42,10 @@
     <None Remove="Fonts\JetBrainsMonoNL-SemiBoldItalic.ttf" />
     <None Remove="Fonts\JetBrainsMonoNL-Thin.ttf" />
     <None Remove="Fonts\JetBrainsMonoNL-ThinItalic.ttf" />
+    <None Remove="Resources\Images\asl_debugger.ico" />
+    <None Remove="Resources\Images\asl_debugger.png" />
+    <None Remove="Resources\Images\asl_debugger_light.ico" />
+    <None Remove="Resources\Images\asl_debugger_light.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -141,6 +145,18 @@
     <Resource Include="Fonts\JetBrainsMonoNL-ThinItalic.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\asl_debugger.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\asl_debugger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\asl_debugger_light.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\asl_debugger_light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -161,10 +177,6 @@
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>
