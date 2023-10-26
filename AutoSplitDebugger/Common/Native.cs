@@ -53,14 +53,14 @@ public static partial class Native
     [LibraryImport("ntdll.dll", EntryPoint = "NtResumeProcess", SetLastError = true)]
     public static partial nuint NtResumeProcess(nuint processHandle);
 
-    [LibraryImport("kernel32.dll")]
+    [LibraryImport("kernel32.dll", SetLastError = true)]
     public static partial nint OpenThread(ThreadAccess dwDesiredAccess, [MarshalAs(UnmanagedType.I1)] bool bInheritHandle, uint dwThreadId);
 
-    [LibraryImport("kernel32.dll")]
+    [LibraryImport("kernel32.dll", SetLastError = true)]
     public static partial uint SuspendThread(nint hThread);
 
-    [LibraryImport("kernel32.dll")]
-    public static partial int ResumeThread(nint hThread);
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    public static partial uint ResumeThread(nint hThread);
 
     [LibraryImport("kernel32", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.I1)]

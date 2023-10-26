@@ -5,12 +5,16 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/styles/wpf.ui.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="DefaultDataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DefaultDataGridColumnHeaderStyle}">
+    <Style x:Key="DefaultDataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="5" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#11FFFFFF" />
+        <Setter Property="Background" Value="#222222" />
     </Style>
 
     <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DefaultDataGridHeaderStyle}" />
@@ -20,6 +24,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="12" />
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>

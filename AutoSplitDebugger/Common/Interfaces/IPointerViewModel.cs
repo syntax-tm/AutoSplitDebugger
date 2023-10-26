@@ -4,7 +4,7 @@ public interface IPointerViewModel
 {
     string Name { get; set; }
     string Format { get; set; }
-    string DisplayText { get; }
+    object DisplayValue { get; }
     string ValueText { get; }
 
     int[] PointerPath { get; }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using AutoSplitDebugger.ViewModels;
+using DevExpress.Mvvm;
 using log4net;
 using log4net.Config;
+using Wpf.Ui.Mvvm.Services;
 
 namespace AutoSplitDebugger;
 
@@ -17,11 +18,9 @@ public partial class App
         {
             XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
-            var vm = MainWindowViewModel.Create();
-            var window = new MainWindow
-            {
-                DataContext = vm
-            };
+            ServiceContainer.Default.RegisterService("SnackbarService", new SnackbarService());
+
+            var window = new MainWindow();
 
             MainWindow = window;
 

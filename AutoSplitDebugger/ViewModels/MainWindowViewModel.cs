@@ -1,57 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
-using AutoSplitDebugger.Config;
-using AutoSplitDebugger.Factories;
-using AutoSplitDebugger.Interfaces;
-using DevExpress.Mvvm.POCO;
+﻿using DevExpress.Mvvm.POCO;
 using log4net;
-using Newtonsoft.Json;
+using System;
+using System.IO;
+using AutoSplitDebugger.Interfaces;
+using DevExpress.Mvvm;
+using DevExpress.Mvvm.DataAnnotations;
+using Wpf.Ui.Common;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace AutoSplitDebugger.ViewModels;
 
-public class MainWindowViewModel
+[POCOViewModel]
+public class MainWindowViewModel : ViewModelBase
 {
-    private const string PROCESS_NAME = @"re5dx9";
+    private const string DEFAULT_CONFIG_FILE = @"config.json";
+    private const string DEFAULT_FILE_FILTER = @"Config files (*.json)|*.json|All files (*.*)|*.*";
+    private const string WINDOW_TITLE_BASE = @"AutoSplitter Debugger";
 
-    private static readonly ILog log = LogManager.GetLogger(typeof(App));
+    private static readonly ILog log = LogManager.GetLogger(typeof(MainWindowViewModel));
     
-    private readonly BackgroundWorker _refreshWorker;
-    private readonly Memory _memory;
-    
-    public virtual bool IsSuspended { get; set; }
-    public virtual bool IsAttached { get; set; }
-    public virtual bool IsRunning { get; set; }
+    protected ISnackbarWindowService WindowService { get { return GetService<ISnackbarWindowService>(); } }
+    protected ISnackbarService SnackbarService { get { return GetService<ISnackbarService>(); } }
+    protected IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
+
+    public string ProcessName => AutoSplitVm?.Config?.Process ?? "Unknown";
+
     public virtual string WindowTitle { get; protected set; }
-
-    public virtual AutoSplitConfig Config { get; set; }
-
-    public virtual IPointerViewModel SelectedPointer { get; set; }
-    public virtual List<IPointerViewModel> Pointers { get; }
+    public virtual AutoSplitViewModel AutoSplitVm { get; set; }
 
     protected MainWindowViewModel()
     {
-        WindowTitle = $"{PROCESS_NAME} | AutoSplitter Debugger";
+        OpenFileDialogService.Title = $"Open Config | {WINDOW_TITLE_BASE}";
+        OpenFileDialogService.AddExtension = true;
+        OpenFileDialogService.Multiselect = false;
+        OpenFileDialogService.CheckFileExists = true;
+        OpenFileDialogService.CheckPathExists = true;
+        OpenFileDialogService.Filter = DEFAULT_FILE_FILTER;
+
+        LoadConfig(DEFAULT_CONFIG_FILE);
         
-        _memory = new (PROCESS_NAME);
-
-        var configJson = File.ReadAllText("config.json");
-        var jsonSettings = new JsonSerializerSettings();
-        jsonSettings.PreserveReferencesHandling = PreserveReferencesHandling.All;
-        var config = JsonConvert.DeserializeObject<AutoSplitConfig>(configJson);
-
-        Config = config;
-
-        var pointers = PointerFactory.CreatePointerViewModels(_memory, config);
-        Pointers = new (pointers);
-
-        _refreshWorker = new () { WorkerSupportsCancellation = true };
-        _refreshWorker.DoWork += RefreshWorkerOnDoWork;
-        _refreshWorker.RunWorkerCompleted += RefreshWorkerOnRunWorkerCompleted;
-
-        Start();
+        WindowTitle = $"{AutoSplitVm.Config.Title ?? AutoSplitVm.Config.Process} | {WINDOW_TITLE_BASE}";
     }
 
     public static MainWindowViewModel Create()
@@ -59,99 +47,31 @@ public class MainWindowViewModel
         return ViewModelSource.Create(() => new MainWindowViewModel());
     }
 
-    public void CreateSnapshot()
+    public void Open()
     {
+        var result = OpenFileDialogService.ShowDialog();
 
-    }
-
-    public void SuspendOrResumeProcess()
-    {
-        try
+        if (!result)
         {
-            if (IsSuspended)
-            {
-                _memory.ResumeProcess();
-            }
-            else
-            {
-                _memory.SuspendProcess();
-            }
-
-            IsSuspended = !IsSuspended;
-        }
-        catch (Exception e)
-        {
-            log.Error($"An error occurred attempting to suspend/resume the {PROCESS_NAME} process. {e.Message}", e);
-        }
-    }
-
-    public void ToggleWorker()
-    {
-        // if worker is already busy, request cancel
-        if (_refreshWorker.IsBusy)
-        {
-            Stop();
+            log.Info("User cancelled config open.");
             return;
         }
 
-        // worker was not running, so start it
-        Start();
+        LoadConfig(OpenFileDialogService.File.GetFullName());
     }
 
-    public void Start()
+    public void LoadConfig(string fileName)
     {
-        if (_refreshWorker.IsBusy) return;
+        if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
+        if (!File.Exists(fileName)) throw new FileNotFoundException($"Config file '{fileName}' not found.", fileName);
 
-        IsRunning = true;
-
-        _refreshWorker.RunWorkerAsync();
+        AutoSplitVm = AutoSplitViewModel.Create(fileName);
     }
 
-    public void Stop()
+    public void OnLoaded()
     {
-        if (!_refreshWorker.IsBusy) return;
+        WindowService.SetSnackbarControl();
 
-        _refreshWorker.CancelAsync();
-
-        IsRunning = false;
-    }
-
-    private async void RefreshWorkerOnDoWork(object sender, DoWorkEventArgs e)
-    {
-        if (!IsAttached)
-        {
-            if (_refreshWorker.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            IsAttached = _memory.Attach();
-
-            if (!IsAttached)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(3));
-
-                e.Cancel = true;
-                return;
-            }
-        }
-
-        while (!_refreshWorker.CancellationPending)
-        {
-            foreach (var pointer in Pointers)
-            {
-                if (_refreshWorker.CancellationPending) break;
-
-                pointer.Refresh();
-            }
-        }
-
-        e.Cancel = true;
-    }
-
-    private void RefreshWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-        IsRunning = false;
+        SnackbarService.Show(@"Snapshot Copied", @"A memory snapshot has been successfully copied to your clipboard (use CTRL + V to paste into a text editor).", SymbolRegular.CheckmarkCircle24, ControlAppearance.Success);
     }
 }

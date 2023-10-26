@@ -6,9 +6,11 @@
     <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DefineConstants>$(DefineConstants);NETESCAPADES_ENUMGENERATORS_EMBED_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="app.config" />
     <None Remove="AutoSplitDebugger.csproj.DotSettings" />
     <None Remove="Fonts\JetBrainsMono-Bold.ttf" />
     <None Remove="Fonts\JetBrainsMono-BoldItalic.ttf" />
@@ -146,6 +148,7 @@
     <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta08" PrivateAssets="all" ExcludeAssets="compile;runtime" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="WPF-UI" Version="2.1.0" />
@@ -158,6 +161,10 @@
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

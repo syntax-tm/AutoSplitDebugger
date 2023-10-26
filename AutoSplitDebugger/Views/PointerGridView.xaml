@@ -6,16 +6,26 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:viewModels="clr-namespace:AutoSplitDebugger.ViewModels"
              xmlns:interfaces="clr-namespace:AutoSplitDebugger.Interfaces"
+             xmlns:models="clr-namespace:AutoSplitDebugger.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type={x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type={x:Type viewModels:AutoSplitViewModel}, IsDesignTimeCreatable=False}">
+
     <Grid>
-        <ui:DataGrid ItemsSource="{Binding Pointers, Mode=OneWay}" SelectedItem="{Binding SelectedPointer, Mode=TwoWay}"
-                     CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False"
-                     CanUserResizeRows="False" SelectionMode="Single" RowHeight="28"
-                     RowStyle="{StaticResource DefaultDataGridRowStyle}">
+        <ui:DataGrid ItemsSource="{Binding Pointers, Mode=OneWay}"
+                     SelectedItem="{Binding SelectedPointer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                     CanUserAddRows="False" CanUserDeleteRows="False"
+                     IsReadOnly="True" AutoGenerateColumns="False"
+                     CanUserResizeRows="True" SelectionMode="Single"
+                     CanUserSortColumns="True"
+                     RowHeight="28" MinRowHeight="25"
+                     RowHeaderWidth="0" BorderThickness="0"
+                     MouseUp="OnDataGridMouseUp"
+                     KeyUp="OnDataGridKeyUp">
             <ui:DataGrid.Columns>
-                <DataGridTemplateColumn Header="Name" Width="200">
+                <DataGridTemplateColumn Header="Name" MinWidth="125"
+                                        SortDirection="Ascending" CanUserSort="True" SortMemberPath="Name"
+                                        HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -25,7 +35,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Address">
+                <DataGridTemplateColumn Header="Address" CanUserResize="False"
+                                        CanUserSort="True" SortMemberPath="Address"
+                                        MinWidth="120"
+                                        HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
                             <Grid>
@@ -40,7 +53,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Value" Width="200"
+                <DataGridTemplateColumn Header="Value" Width="150"
+                                        HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}"
                                         CellStyle="{StaticResource IsChangedDataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
@@ -65,30 +79,55 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Display" Width="250"
+                <DataGridTemplateColumn Header="Display" MinWidth="200" Width="*"
+                                        HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}"
                                         CellStyle="{StaticResource IsChangedDataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type interfaces:IPointerViewModel}">
-                            <Grid>
-                                <TextBlock Text="{Binding DisplayText, NotifyOnTargetUpdated=True}" VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
-                                           Margin="10,0" HorizontalAlignment="Left"
-                                           FontFamily="Segoe UI">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="HorizontalAlignment" Value="Right" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DisplayText}" Value="No">
-                                                    <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding DisplayText}" Value="Yes">
-                                                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
+                            <DataTemplate.Resources>
+                                <DataTemplate DataType="{x:Type models:StringModel}">
+                                    <TextBlock Text="{Binding Value}" VerticalAlignment="Center" Margin="10,0"
+                                               TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               FontFamily="Segoe UI">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Value}" Value="No">
+                                                        <Setter Property="Foreground" Value="{StaticResource RedBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Value}" Value="Yes">
+                                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type models:TimeSpanModel}">
+                                    <ItemsControl ItemsSource="{Binding Segments}" VerticalContentAlignment="Center" Margin="-5,0,0,0">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type models:TimeSpanSegmentModel}">
+                                                <StackPanel Orientation="Horizontal" Margin="10,0,0,0" >
+                                                    <TextBlock Text="{Binding DisplayValue, Mode=OneWay}" FontWeight="SemiBold"
+                                                               FontFamily="{StaticResource JetBrainsMono}" />
+                                                    <TextBlock Text="{Binding Label, Mode=OneWay}" FontWeight="Light"
+                                                               Margin="5,0,0,0"
+                                                               FontFamily="{StaticResource JetBrainsMono}"
+                                                               Opacity="0.6"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataTemplate.Resources>
+                            <ContentPresenter Content="{Binding DisplayValue}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

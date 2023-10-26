@@ -6,52 +6,27 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:vm="clr-namespace:AutoSplitDebugger.ViewModels"
         xmlns:views="clr-namespace:AutoSplitDebugger.Views"
+        xmlns:behaviors="clr-namespace:AutoSplitDebugger.Behaviors"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:services="clr-namespace:AutoSplitDebugger.Services"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}"
+        DataContext="{dxmvvm:ViewModelSource Type={x:Type vm:MainWindowViewModel}}"
         Topmost="True" ExtendsContentIntoTitleBar="True"
-        Width="800" Height="600"
-        WindowCornerPreference="DoNotRound">
+        WindowCornerPreference="DoNotRound"
+        ShowActivated="True">
 
-    <ui:UiWindow.Resources>
-        <Style x:Key="MenuItemBaseStyle" TargetType="{x:Type ui:MenuItem}" BasedOn="{StaticResource {x:Type ui:MenuItem}}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="SymbolIconFilled" Value="True" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </ui:UiWindow.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <services:SnackbarWindowService />
+        <behaviors:WindowAutoSaveBehavior />
+        <dxmvvm:EventToCommand Event="Loaded" Command="{Binding OnLoadedCommand}" />
+    </dxmvvm:Interaction.Behaviors>
 
     <Grid>
         <DockPanel LastChildFill="True">
-            <ui:TitleBar DockPanel.Dock="Top" Title="{Binding WindowTitle}" />
-            <views:StatusBarView DockPanel.Dock="Bottom" />
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Menu>
-                    <ui:MenuItem Header="File">
-                        <ui:MenuItem Header="Open Config">
-                            <ui:MenuItem.Style>
-                                <Style TargetType="{x:Type ui:MenuItem}" BasedOn="{StaticResource MenuItemBaseStyle}">
-                                    <Setter Property="SymbolIcon" Value="Folder24" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="SymbolIcon" Value="FolderOpen24" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:MenuItem.Style>
-                        </ui:MenuItem>
-                    </ui:MenuItem>
-                    <ui:MenuItem Header="Help">
-                        <ui:MenuItem Header="About" SymbolIcon="Question24" />
-                    </ui:MenuItem>
-                </Menu>
-                <views:PointerGridView Grid.Row="1" />
-            </Grid>
+            <ui:TitleBar DockPanel.Dock="Top" Title="{Binding WindowTitle}" Padding="7,5" />
+            <views:StatusBarView DockPanel.Dock="Bottom" DataContext="{Binding AutoSplitVm}" />
+            <views:HomeView DataContext="{Binding AutoSplitVm}" />
         </DockPanel>
     </Grid>
 </ui:UiWindow>

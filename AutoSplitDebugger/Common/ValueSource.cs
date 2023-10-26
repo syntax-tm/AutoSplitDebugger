@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoSplitDebugger.Interfaces;
+using AutoSplitDebugger.Models;
 
 namespace AutoSplitDebugger
 {
@@ -25,13 +26,13 @@ namespace AutoSplitDebugger
             return Map.ContainsKey(value);
         }
 
-        public string GetDisplayText(object obj)
+        public object GetDisplay(object obj)
         {
             if (obj is not T value) throw new ArgumentException($"{nameof(obj)} must be of type {typeof(T).Name}.");
             
             if (!Map.ContainsKey(value)) return null;
 
-            return Map[value];
+            return new StringModel(Map[value]);
         }
     }
 }

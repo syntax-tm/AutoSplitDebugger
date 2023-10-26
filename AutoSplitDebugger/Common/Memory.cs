@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,11 +13,13 @@ namespace AutoSplitDebugger;
 public class Memory
 {
     private const int OPEN_PROCESS_FLAGS = Flags.ProcessVmOperation | Flags.ProcessVmRead | Flags.ProcessVmWrite;
+    private const int BYTE_ALIGNMENT = 4;
 
     private readonly ILog log = LogManager.GetLogger(nameof(Memory));
 
     private readonly string _processName;
     private nint _processHandle;
+    private readonly Dictionary<int, uint> _threadStates = new ();
 
 #pragma warning disable 649
     private readonly int m_iBytesWritten;
@@ -35,7 +39,7 @@ public class Memory
 
         _processName = processName;
     }
-        
+
     public bool Attach()
     {
         try
@@ -59,20 +63,38 @@ public class Memory
         }
     }
 
+    public bool IsSuspended()
+    {
+        return _threadStates.Values.Any(v => v > 0);
+    }
+
     public void SuspendProcess()
     {
         foreach (ProcessThread pT in Process.Threads)
         {
-            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)pT.Id);
-
+            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint) pT.Id);
             if (pOpenThread == nint.Zero)
             {
-                continue;
+                var openEx = GetLastErrorAsException();
+                throw openEx;
             }
 
-            Native.SuspendThread(pOpenThread);
+            var suspendResult = Native.SuspendThread(pOpenThread);
+            if (suspendResult == uint.MaxValue)
+            {
+                var suspendEx = GetLastErrorAsException();
+                throw suspendEx;
+            }
 
-            Native.CloseHandle(pOpenThread);
+            _threadStates[pT.Id] = suspendResult;
+            
+            if (Native.CloseHandle(pOpenThread))
+            {
+                return;
+            }
+            
+            var closeEx = GetLastErrorAsException();
+            throw closeEx;
         }
     }
 
@@ -80,20 +102,33 @@ public class Memory
     {
         foreach (ProcessThread pT in Process.Threads)
         {
-            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)pT.Id);
-
+            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint) pT.Id);
             if (pOpenThread == nint.Zero)
             {
                 continue;
             }
 
-            var suspendCount = 0;
-            do
+            var suspendResult = Native.ResumeThread(pOpenThread);
+            if (suspendResult == uint.MaxValue)
             {
-                suspendCount = Native.ResumeThread(pOpenThread);
-            } while (suspendCount > 0);
+                var resumeEx = GetLastErrorAsException();
+                throw resumeEx;
+            }
 
-            Native.CloseHandle(pOpenThread);
+            // 0 when thread was not suspended
+            // 1 when thread was suspended, but restarted
+            // else s the thread is still suspended
+            _threadStates[pT.Id] = suspendResult > 1
+                ? suspendResult
+                : 0;
+            
+            if (Native.CloseHandle(pOpenThread))
+            {
+                return;
+            }
+
+            var closeEx = GetLastErrorAsException();
+            throw closeEx;
         }
     }
 
@@ -198,6 +233,13 @@ public class Memory
         return current;
     }
 
+    private Win32Exception GetLastErrorAsException()
+    {
+        var error = GetLastPInvokeError();
+
+        return new (error);
+    }
+
 #region Other
 
     internal struct Flags
@@ -213,14 +255,13 @@ public class Memory
 
     public static float[] ConvertToFloatArray(byte[] bytes)
     {
-        if (bytes.Length % 4 != 0)
-            throw new ArgumentException($"{nameof(bytes)} is aligned properly.");
+        if (bytes.Length % BYTE_ALIGNMENT != 0) throw new ArgumentException($"{nameof(bytes)} is aligned properly.");
 
-        var floats = new float[bytes.Length / 4];
+        var floats = new float[bytes.Length / BYTE_ALIGNMENT];
 
         for (var i = 0; i < floats.Length; i++)
         {
-            floats[i] = BitConverter.ToSingle(bytes, i * 4);
+            floats[i] = BitConverter.ToSingle(bytes, i * BYTE_ALIGNMENT);
         }
 
         return floats;

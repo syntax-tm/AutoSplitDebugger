@@ -17,18 +17,18 @@ namespace AutoSplitDebugger.Factories
                 var type = pointer.Type;
                 IPointerViewModel pointerVm = type switch
                 {
-                    "sbyte"   => PointerViewModel<sbyte>.Create(memory, pointer),
-                    "byte"    => PointerViewModel<byte>.Create(memory, pointer),
-                    "short"   => PointerViewModel<short>.Create(memory, pointer),
-                    "ushort"  => PointerViewModel<ushort>.Create(memory, pointer),
-                    "int"     => PointerViewModel<int>.Create(memory, pointer),
-                    "uint"    => PointerViewModel<uint>.Create(memory, pointer),
-                    "long"    => PointerViewModel<long>.Create(memory, pointer),
-                    "ulong"   => PointerViewModel<ulong>.Create(memory, pointer),
-                    "float"   => PointerViewModel<float>.Create(memory, pointer),
-                    "double"  => PointerViewModel<double>.Create(memory, pointer),
-                    "decimal" => PointerViewModel<decimal>.Create(memory, pointer),
-                    _         => throw new ArgumentException($"Unknown type '{type}'.")
+                    PointerDataType._sbyte    => PointerViewModel<sbyte>.Create(memory, pointer),
+                    PointerDataType._byte     => PointerViewModel<byte>.Create(memory, pointer),
+                    PointerDataType._short    => PointerViewModel<short>.Create(memory, pointer),
+                    PointerDataType._ushort   => PointerViewModel<ushort>.Create(memory, pointer),
+                    PointerDataType._int      => PointerViewModel<int>.Create(memory, pointer),
+                    PointerDataType._uint     => PointerViewModel<uint>.Create(memory, pointer),
+                    PointerDataType._long     => PointerViewModel<long>.Create(memory, pointer),
+                    PointerDataType._ulong    => PointerViewModel<ulong>.Create(memory, pointer),
+                    PointerDataType._float    => PointerViewModel<float>.Create(memory, pointer),
+                    PointerDataType._double   => PointerViewModel<double>.Create(memory, pointer),
+                    PointerDataType._decimal  => PointerViewModel<decimal>.Create(memory, pointer),
+                    _                         => throw new ArgumentException($"Unknown type '{type}'.")
                 };
 
                 vms.Add(pointerVm);

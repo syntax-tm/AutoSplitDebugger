@@ -1,4 +1,5 @@
 {
+  "title": "Resident Evil 5", 
   "process": "re5dx9",
   "valueSources": [
     {
@@ -376,6 +377,8 @@
       "name": "IGT",
       "type": "float",
       "format": "{0:#,##0.000 s}",
+      "isTime": true,
+      "unitOfTime": "Seconds",
       "offsets": [
         "0xDB2158",
         "0x273F8"
