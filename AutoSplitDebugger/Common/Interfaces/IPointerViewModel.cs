@@ -18,6 +18,8 @@ public interface IPointerViewModel
     IValueSource ValueSource { get; set; }
 
     void Refresh();
+    bool Init();
+    void Clear();
 
     IPointerSnapshot CreateSnapshot();
 }

@@ -13,6 +13,7 @@
     
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService />
+        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnLoadedCommand}" />
     </dxmvvm:Interaction.Behaviors>
 
     <Grid>

@@ -7,7 +7,7 @@ namespace AutoSplitDebugger;
 
 internal class StringEnumDescriptionConverter : StringEnumConverter
 {
-    private static readonly Dictionary<Type, Dictionary<string, Enum>> _enumCache = new ();
+    private static readonly Dictionary<Type, Dictionary<string, Enum>> _enumCache = new();
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
@@ -38,7 +38,7 @@ internal class StringEnumDescriptionConverter : StringEnumConverter
 
                     throw new JsonSerializationException($"Cannot convert null value to {objectType}.");
                 }
-                
+
                 // cache the type's string map on the first use
                 if (!_enumCache.ContainsKey(t))
                 {
@@ -47,7 +47,7 @@ internal class StringEnumDescriptionConverter : StringEnumConverter
 
                     foreach (var value in values)
                     {
-                        var enumVal = (Enum) value;
+                        var enumVal = (Enum)value;
                         var name = enumVal.GetDescription();
                         names[name] = enumVal;
                     }

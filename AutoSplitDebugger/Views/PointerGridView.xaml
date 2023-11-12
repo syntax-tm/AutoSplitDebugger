@@ -7,6 +7,8 @@
              xmlns:viewModels="clr-namespace:AutoSplitDebugger.ViewModels"
              xmlns:interfaces="clr-namespace:AutoSplitDebugger.Interfaces"
              xmlns:models="clr-namespace:AutoSplitDebugger.Models"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:behaviors="clr-namespace:AutoSplitDebugger.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type viewModels:AutoSplitViewModel}, IsDesignTimeCreatable=False}">
@@ -19,9 +21,10 @@
                      CanUserResizeRows="True" SelectionMode="Single"
                      CanUserSortColumns="True"
                      RowHeight="28" MinRowHeight="25"
-                     RowHeaderWidth="0" BorderThickness="0"
-                     MouseUp="OnDataGridMouseUp"
-                     KeyUp="OnDataGridKeyUp">
+                     RowHeaderWidth="0" BorderThickness="0">
+            <dxmvvm:Interaction.Behaviors>
+                <behaviors:DataGridSelectionBehavior />
+            </dxmvvm:Interaction.Behaviors>
             <ui:DataGrid.Columns>
                 <DataGridTemplateColumn Header="Name" MinWidth="125"
                                         SortDirection="Ascending" CanUserSort="True" SortMemberPath="Name"

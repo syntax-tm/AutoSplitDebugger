@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <FontFamily x:Key="FiraCode">pack://application:,,,/Wpf.Ui;component/Fonts/#Fira Code</FontFamily>
-    <FontFamily x:Key="JetBrainsMono">/Fonts/#Jetbrains Mono</FontFamily>
-    <FontFamily x:Key="JetBrainsMonoNL">/Fonts/#Jetbrains Mono NL</FontFamily>
+    <FontFamily x:Key="JetBrainsMono">/Resources/Fonts/#Jetbrains Mono</FontFamily>
+    <FontFamily x:Key="JetBrainsMonoNL">/Resources/Fonts/#Jetbrains Mono NL</FontFamily>
 
 </ResourceDictionary>

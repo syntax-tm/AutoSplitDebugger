@@ -21,14 +21,14 @@ public partial class App
 
             ServiceContainer.Default.RegisterService("SnackbarService", new SnackbarService());
 
-            var iconUri = new Uri(@"/Resources/Images/asl_debugger_light.png", UriKind.Relative);
+            var iconUri = new Uri(@"/Resources/Images/asl_debugger.png", UriKind.Relative);
             var resourceInfo = GetResourceStream(iconUri);
             using var stream = resourceInfo!.Stream;
             var bmp = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
             var window = new MainWindow
             {
-                Icon = bmp
+                //Icon = bmp
             };
 
             MainWindow = window;

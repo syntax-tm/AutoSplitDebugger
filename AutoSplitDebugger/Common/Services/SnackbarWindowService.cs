@@ -63,13 +63,15 @@ public class SnackbarWindowService : WindowAwareServiceBase, ISnackbarWindowServ
 
     public void SetSnackbarControl()
     {
-        var service = SnackbarService;
-        if (service == null) return;
-
         var snackbar = Snackbar;
-        if (snackbar == null) return;
 
-        service.SetSnackbarControl(snackbar);
+        // ensure that a snackbar control has been created first
+        if (snackbar == null)
+        {
+            throw new InvalidOperationException($"The {nameof(Snackbar)} control has not been created.");
+        }
+
+        SnackbarService.SetSnackbarControl(snackbar);
     }
 
     public DXWindowState WindowState

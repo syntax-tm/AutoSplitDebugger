@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using AutoSplitDebugger.Interfaces;
+using Newtonsoft.Json;
 
 namespace AutoSplitDebugger.Config;
 
+[JsonObject(IsReference = true)]
 public class ValueSourceConfig
 {
     public Dictionary<string, string> Map { get; set; }

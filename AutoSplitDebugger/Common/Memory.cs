@@ -5,19 +5,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Windows.Win32;
+using Windows.Win32.System.Threading;
+using AutoSplitDebugger.Models;
 using log4net;
-using static System.Runtime.InteropServices.Marshal;
 
 namespace AutoSplitDebugger;
 
 public class Memory
 {
-    private const int OPEN_PROCESS_FLAGS = Flags.ProcessVmOperation | Flags.ProcessVmRead | Flags.ProcessVmWrite;
+    private const PROCESS_ACCESS_RIGHTS OPEN_PROCESS_FLAGS = PROCESS_ACCESS_RIGHTS.PROCESS_VM_OPERATION | PROCESS_ACCESS_RIGHTS.PROCESS_VM_READ | PROCESS_ACCESS_RIGHTS.PROCESS_VM_WRITE;
     private const int BYTE_ALIGNMENT = 4;
 
     private readonly ILog log = LogManager.GetLogger(nameof(Memory));
 
-    private readonly string _processName;
+    private string _processName;
     private nint _processHandle;
     private readonly Dictionary<int, uint> _threadStates = new ();
 
@@ -32,6 +34,12 @@ public class Memory
     public nint BaseAddress => MainModule.BaseAddress;
 
     public bool IsAttached { get; private set; }
+    public ModuleVersionInfo ModuleVersionInfo { get; private set; }
+    
+    public Memory()
+    {
+
+    }
 
     public Memory(string processName)
     {
@@ -40,16 +48,31 @@ public class Memory
         _processName = processName;
     }
 
-    public bool Attach()
+    public bool Attach(IEnumerable<ModuleVersionInfo> moduleVersions)
     {
+        if (moduleVersions == null) throw new ArgumentNullException(nameof(moduleVersions));
         try
         {
-            var processes = Process.GetProcessesByName(_processName);
+            foreach (var versionInfo in moduleVersions)
+            {
+                // initial check is just done on the process name
+                var processes = Process.GetProcessesByName(versionInfo.ModuleName);
 
-            if (!processes.Any()) return false;
+                if (!processes.Any()) continue;
 
-            Process = processes[0];
-            _processHandle = Native.OpenProcess(OPEN_PROCESS_FLAGS, false, Process.Id);
+                // verify this is the correct module size etc
+                if (!versionInfo.IsMatch(processes[0])) continue;
+
+                Process = processes[0];
+                ModuleVersionInfo = versionInfo;
+                _processName = Process.ProcessName;
+
+                break;
+            }
+
+            if (Process == null) return false;
+            
+            _processHandle = PInvoke.OpenProcess(OPEN_PROCESS_FLAGS, false, (uint) Process.Id);
 
             IsAttached = true;
 
@@ -72,14 +95,14 @@ public class Memory
     {
         foreach (ProcessThread pT in Process.Threads)
         {
-            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint) pT.Id);
+            var pOpenThread = PInvoke.OpenThread(THREAD_ACCESS_RIGHTS.THREAD_SUSPEND_RESUME, false, (uint) pT.Id);
             if (pOpenThread == nint.Zero)
             {
                 var openEx = GetLastErrorAsException();
                 throw openEx;
             }
 
-            var suspendResult = Native.SuspendThread(pOpenThread);
+            var suspendResult = PInvoke.SuspendThread(pOpenThread);
             if (suspendResult == uint.MaxValue)
             {
                 var suspendEx = GetLastErrorAsException();
@@ -88,7 +111,7 @@ public class Memory
 
             _threadStates[pT.Id] = suspendResult;
             
-            if (Native.CloseHandle(pOpenThread))
+            if (PInvoke.CloseHandle(pOpenThread))
             {
                 return;
             }
@@ -102,13 +125,13 @@ public class Memory
     {
         foreach (ProcessThread pT in Process.Threads)
         {
-            var pOpenThread = Native.OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint) pT.Id);
+            var pOpenThread = PInvoke.OpenThread(THREAD_ACCESS_RIGHTS.THREAD_SUSPEND_RESUME, false, (uint) pT.Id);
             if (pOpenThread == nint.Zero)
             {
                 continue;
             }
 
-            var suspendResult = Native.ResumeThread(pOpenThread);
+            var suspendResult = PInvoke.ResumeThread(pOpenThread);
             if (suspendResult == uint.MaxValue)
             {
                 var resumeEx = GetLastErrorAsException();
@@ -117,7 +140,7 @@ public class Memory
 
             // 0 when thread was not suspended
             // 1 when thread was suspended, but restarted
-            // else s the thread is still suspended
+            // else the thread is still suspended
             _threadStates[pT.Id] = suspendResult > 1
                 ? suspendResult
                 : 0;
@@ -164,7 +187,7 @@ public class Memory
         
     public T ReadMemory<T>(params int[] offsets) where T : struct
     {
-        var byteSize = SizeOf(typeof(T));
+        var byteSize = Marshal.SizeOf(typeof(T));
 
         var buffer = new byte[byteSize];
         var address = ResolvePath(offsets);
@@ -176,7 +199,7 @@ public class Memory
 
     public T ReadMemory<T>(int address) where T : struct
     {
-        var byteSize = SizeOf(typeof(T));
+        var byteSize = Marshal.SizeOf(typeof(T));
 
         var buffer = new byte[byteSize];
         var ptr = new nint(address);
@@ -188,7 +211,7 @@ public class Memory
         
     public T ReadMemory<T>(nint ptr) where T : struct
     {
-        var byteSize = SizeOf(typeof(T));
+        var byteSize = Marshal.SizeOf(typeof(T));
 
         var buffer = new byte[byteSize];
 
@@ -233,23 +256,12 @@ public class Memory
         return current;
     }
 
-    private Win32Exception GetLastErrorAsException()
+    private static Win32Exception GetLastErrorAsException()
     {
-        var error = GetLastPInvokeError();
+        var error = Marshal.GetLastPInvokeError();
 
         return new (error);
     }
-
-#region Other
-
-    internal struct Flags
-    {
-        public const int ProcessVmOperation = 0x0008;
-        public const int ProcessVmRead = 0x0010;
-        public const int ProcessVmWrite = 0x0020;
-    }
-
-#endregion
 
 #region Conversion
 
@@ -272,7 +284,7 @@ public class Memory
         var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
         try
         {
-            var value = PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            var value = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             if (value == null) throw new InvalidOperationException();
             return (T) value;
         }
@@ -284,13 +296,13 @@ public class Memory
 
     public static byte[] StructureToByteArray(object obj)
     {
-        var length = SizeOf(obj);
+        var length = Marshal.SizeOf(obj);
         var array = new byte[length];
-        var pointer = AllocHGlobal(length);
+        var pointer = Marshal.AllocHGlobal(length);
 
-        StructureToPtr(obj, pointer, true);
-        Copy(pointer, array, 0, length);
-        FreeHGlobal(pointer);
+        Marshal.StructureToPtr(obj, pointer, true);
+        Marshal.Copy(pointer, array, 0, length);
+        Marshal.FreeHGlobal(pointer);
 
         return array;
     }

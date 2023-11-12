@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoSplitDebugger.Config;
@@ -24,14 +26,14 @@ public class AutoSplitViewModel : ViewModelBase
 {
     private static readonly ILog log = LogManager.GetLogger(typeof(AutoSplitViewModel));
     
-    protected ISnackbarService SnackbarService { get { return GetService<ISnackbarService>(); } }
+    protected ISnackbarService SnackbarService => GetService<ISnackbarService>();
 
     private readonly BackgroundWorker _refreshWorker;
     private Memory _memory;
     
-    protected delegate void RefreshPointers(IList<IPointerViewModel> pointers);
+    protected delegate bool RefreshPointers(IList<IPointerViewModel> pointers);
 
-    private readonly RefreshPointers _synchronousRefresh = SynchronousRefresh;
+    //private readonly RefreshPointers _synchronousRefresh = SynchronousRefresh;
     private readonly RefreshPointers _parallelRefresh = ParallelRefresh;
 
     public virtual bool IsParallel { get; set; }
@@ -98,15 +100,10 @@ public class AutoSplitViewModel : ViewModelBase
     [Command(false)]
     public void LoadConfig(AutoSplitConfig config)
     {
-        if (config == null) throw new ArgumentNullException(nameof(config));
+        Config = config ?? throw new ArgumentNullException(nameof(config));
+        Title = config.Title;
 
-        // TODO: create and add support for JSON schema validation for config files 
-        if (string.IsNullOrEmpty(config.Process)) throw new ArgumentNullException(nameof(config.Process));
-
-        Config = config;
-        Title = string.IsNullOrEmpty(config.Title) ? config.Title : config.Process;
-        
-        _memory = new (config.Process);
+        _memory = new ();
 
         var pointers = PointerFactory.CreatePointerViewModels(_memory, config);
         Pointers = new (pointers);
@@ -116,7 +113,6 @@ public class AutoSplitViewModel : ViewModelBase
 
     public void CreateSnapshot()
     {
-        // TODO: create and save a snapshot of the current pointer values
         try
         {
             _memory.SuspendProcess();
@@ -126,6 +122,11 @@ public class AutoSplitViewModel : ViewModelBase
 
             Clipboard.SetText(json, TextDataFormat.Text);
             Clipboard.Flush();
+
+            const string SUCCESS_TITLE = @"Snapshot Copied";
+            const string SUCCESS_MESSAGE = @"A memory snapshot has been successfully copied to your clipboard (use CTRL + V to paste into a text editor).";
+
+            SnackbarService.Show(SUCCESS_TITLE, SUCCESS_MESSAGE, SymbolRegular.CheckmarkCircle24, ControlAppearance.Success);
         }
         catch (Exception e)
         {
@@ -156,7 +157,7 @@ public class AutoSplitViewModel : ViewModelBase
         }
         catch (Exception e)
         {
-            log.Error($"An error occurred attempting to suspend/resume the {Config.Process} process. {e.Message}", e);
+            log.Error($"An error occurred attempting to suspend/resume the {_memory.Process.ProcessName} process. {e.Message}", e);
         }
     }
 
@@ -177,8 +178,6 @@ public class AutoSplitViewModel : ViewModelBase
     {
         if (_refreshWorker.IsBusy) return;
 
-        IsRunning = true;
-
         _refreshWorker.RunWorkerAsync();
     }
 
@@ -195,7 +194,12 @@ public class AutoSplitViewModel : ViewModelBase
 
     private async void RefreshWorkerOnDoWork(object sender, DoWorkEventArgs e)
     {
-        if (!IsAttached)
+        IsRunning = true;
+
+        var versionInfo = Config.Versions.SelectMany(ModuleVersionInfo.Create).ToList();
+
+        // TODO: this should probably always force the attach to process and version detection
+        while (!IsAttached)
         {
             if (_refreshWorker.CancellationPending)
             {
@@ -203,23 +207,34 @@ public class AutoSplitViewModel : ViewModelBase
                 return;
             }
 
-            IsAttached = _memory.Attach();
+            IsAttached = _memory.Attach(versionInfo);
 
-            if (!IsAttached)
+            if (IsAttached)
             {
-                await Task.Delay(TimeSpan.FromSeconds(3));
-
-                e.Cancel = true;
-                return;
+                break;
             }
+
+            // wait a bit before retrying
+            await Task.Delay(TimeSpan.FromSeconds(1));
         }
 
+        // initialize the pointers before refreshing so that it
+        // doesn't slow down the actual refresh
+        foreach (var pointer in Pointers)
+        {
+            pointer.Init();
+        }
+
+        // the actual refresh loop for the pointers
         while (!_refreshWorker.CancellationPending)
         {
-            _parallelRefresh(Pointers);
-        }
+            var result = _parallelRefresh(Pointers);
 
-        e.Cancel = true;
+            if (result) continue;
+
+            e.Cancel = true;
+            break;
+        }
     }
 
     private void RefreshWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -229,24 +244,57 @@ public class AutoSplitViewModel : ViewModelBase
 
 #endregion
 
+    [Command]
+    protected void OnLoaded()
+    {
+        if (Config == null) return;
+
+        const string TITLE = $@"Config Loaded";
+        var message = $"Configuration '{Config.Title}' was successfully loaded.";
+
+        SnackbarService.Show(TITLE, message, SymbolRegular.CheckmarkCircle24, ControlAppearance.Success);
+    }
+
     protected void OnSelectedPointerChanged()
     {
         HasSelectedPointer = SelectedPointer != null;
     }
     
-    protected static void SynchronousRefresh(IList<IPointerViewModel> pointers)
+    protected static bool SynchronousRefresh(IList<IPointerViewModel> pointers)
     {
-        foreach (var pointer in pointers)
+        try
         {
-            pointer.Refresh();
+            foreach (var pointer in pointers)
+            {
+                pointer.Refresh();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            log.Error($"An error occurred attempting to refresh pointers. {e.Message}", e);
+
+            return false;
         }
     }
 
-    protected static void ParallelRefresh(IList<IPointerViewModel> pointers)
+    protected static bool ParallelRefresh(IList<IPointerViewModel> pointers)
     {
-        Parallel.ForEach(pointers, pointer =>
+        try
         {
-            pointer.Refresh();
-        });
+            Parallel.ForEach(pointers, pointer =>
+            {
+                pointer.Refresh();
+            });
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            log.Error($"An error occurred attempting to refresh pointers. {e.Message}", e);
+
+            return false;
+        }
     }
 }

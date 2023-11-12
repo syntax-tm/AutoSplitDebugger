@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using AutoSplitDebugger.Common.Converters;
 using AutoSplitDebugger.Interfaces;
+using AutoSplitDebugger.Models;
+using DevExpress.Mvvm.Native;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -10,8 +14,6 @@ namespace AutoSplitDebugger.Config;
 [DebuggerDisplay("{ToString()}")]
 public class PointerConfig
 {
-    private readonly string[] _rawOffsets;
-
     /// <summary>
     /// The name of the pointer.
     /// </summary>
@@ -54,49 +56,26 @@ public class PointerConfig
     [JsonProperty("valueSource")]
     public ValueSourceConfig ValueSourceConfig { get; set; }
     /// <summary>
-    /// The offsets used to initialize the pointer.
+    /// The version-specific offsets for the pointer.
     /// </summary>
-    /// <remarks>Supports normal and multi-level pointers.</remarks>
-    public int[] Offsets { get; set; }
+    public OffsetConfig[] Offsets { get; set; }
 
-    public PointerConfig(string[] offsets)
+    public PointerConfig(OffsetConfig[] offsets)
     {
-        _rawOffsets = offsets;
-            
-        LoadOffsets();
+        Offsets = offsets;
+
+        Offsets.ForEach(o => o.PointerConfig = this);
+    }
+
+    public OffsetConfig GetOffsets(ModuleVersionInfo versionInfo)
+    {
+        var offsetConfig = Offsets.FirstOrDefault(o => o.Version.Equals(versionInfo));
+
+        return offsetConfig;
     }
 
     public override string ToString()
     {
         return $"{Name} ({Type.ToStringFast()})";
-    }
-
-    private void LoadOffsets()
-    {
-        try
-        {
-            Offsets = new int[_rawOffsets.Length];
-
-            for (var i = 0; i < _rawOffsets.Length; i++)
-            {
-                var rawOffset = _rawOffsets[i];
-                var isHex = rawOffset.StartsWith("0x");
-
-                if (isHex)
-                {
-                    Offsets[i] = Convert.ToInt32(rawOffset, 16);
-                }
-                else
-                {
-                    Offsets[i] = int.Parse(rawOffset);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            var message = $"An error occurred loading the offsets for {nameof(PointerConfig)} '{Name}'. {e.Message}";
-
-            throw new (message, e);
-        }
     }
 }

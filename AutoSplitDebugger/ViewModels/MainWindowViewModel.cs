@@ -19,11 +19,9 @@ public class MainWindowViewModel : ViewModelBase
 
     private static readonly ILog log = LogManager.GetLogger(typeof(MainWindowViewModel));
     
-    protected ISnackbarWindowService WindowService { get { return GetService<ISnackbarWindowService>(); } }
-    protected ISnackbarService SnackbarService { get { return GetService<ISnackbarService>(); } }
-    protected IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
-
-    public string ProcessName => AutoSplitVm?.Config?.Process ?? "Unknown";
+    protected ISnackbarWindowService WindowService => GetService<ISnackbarWindowService>();
+    protected ISnackbarService SnackbarService => GetService<ISnackbarService>();
+    protected IOpenFileDialogService OpenFileDialogService => GetService<IOpenFileDialogService>();
 
     public virtual string WindowTitle { get; protected set; }
     public virtual AutoSplitViewModel AutoSplitVm { get; set; }
@@ -39,7 +37,7 @@ public class MainWindowViewModel : ViewModelBase
 
         LoadConfig(DEFAULT_CONFIG_FILE);
         
-        WindowTitle = $"{AutoSplitVm.Config.Title ?? AutoSplitVm.Config.Process} | {WINDOW_TITLE_BASE}";
+        WindowTitle = $"{AutoSplitVm.Config.Title} | {WINDOW_TITLE_BASE}";
     }
 
     public static MainWindowViewModel Create()
@@ -71,7 +69,5 @@ public class MainWindowViewModel : ViewModelBase
     public void OnLoaded()
     {
         WindowService.SetSnackbarControl();
-
-        SnackbarService.Show(@"Snapshot Copied", @"A memory snapshot has been successfully copied to your clipboard (use CTRL + V to paste into a text editor).", SymbolRegular.CheckmarkCircle24, ControlAppearance.Success);
     }
 }

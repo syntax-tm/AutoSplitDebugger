@@ -16,10 +16,29 @@
         WindowCornerPreference="DoNotRound"
         ShowActivated="True">
 
+    <ui:UiWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/styles/wpf.ui.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type ui:UiWindow}" BasedOn="{StaticResource DefaultUiWindowStyle}">
+                <Setter Property="Icon" Value="Resources/Images/asl_debugger.png" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding AutoSplitVm.IsRunning}">
+                        <Setter Property="Icon" Value="Resources/Images/asl_debugger_running.png" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding AutoSplitVm.IsSuspended}">
+                        <Setter Property="Icon" Value="Resources/Images/asl_debugger_paused.png" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ui:UiWindow.Resources>
+
     <dxmvvm:Interaction.Behaviors>
         <services:SnackbarWindowService />
         <behaviors:WindowAutoSaveBehavior />
-        <dxmvvm:EventToCommand Event="Loaded" Command="{Binding OnLoadedCommand}" />
+        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnLoadedCommand}" />
     </dxmvvm:Interaction.Behaviors>
 
     <Grid>

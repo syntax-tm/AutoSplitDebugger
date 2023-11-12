@@ -1,6 +1,24 @@
 {
-  "title": "Resident Evil 5", 
-  "process": "re5dx9",
+  "title": "Resident Evil 5",
+  "versions": [
+    {
+      "$id": "1.1.0",
+      "name": "1.1.0",
+      "moduleName": "re5dx9",
+      "moduleSize": [
+        16109568
+      ]
+    },
+    {
+      "$id": "1.2.0",
+      "name": "1.2.0",
+      "moduleName": "re5dx9",
+      "moduleSize": [
+        26210304,
+        26382336
+      ]
+    }
+  ],
   "valueSources": [
     {
       "$id": "Levels",
@@ -360,8 +378,24 @@
         "$ref": "Levels"
       },
       "offsets": [
-        "0xDB2158",
-        "0x273D0"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA23D8",
+            "0x273D0"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB2158",
+            "0x273D0"
+          ]
+        }
       ]
     },
     {
@@ -369,8 +403,24 @@
       "type": "byte",
       "format": "{0:0}",
       "offsets": [
-        "0xDB2158",
-        "0x273D8"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA23D8",
+            "0x273D8"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB2158",
+            "0x273D8"
+          ]
+        }
       ]
     },
     {
@@ -380,8 +430,24 @@
       "isTime": true,
       "unitOfTime": "Seconds",
       "offsets": [
-        "0xDB2158",
-        "0x273F8"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA23D8",
+            "0x273F8"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB2158",
+            "0x273F8"
+          ]
+        }
       ]
     },
     {
@@ -389,10 +455,28 @@
       "type": "byte",
       "format": "{0:0}",
       "offsets": [
-        "0xE34578",
-        "0x984",
-        "0x2EDC",
-        "0x4"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xE2487C",
+            "0x984",
+            "0x2EDC",
+            "0x4"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xE34578",
+            "0x984",
+            "0x2EDC",
+            "0x4"
+          ]
+        }
       ]
     },
     {
@@ -403,10 +487,28 @@
         "$ref": "isPaused"
       },
       "offsets": [
-        "0xE34578",
-        "0x984",
-        "0x2EDC",
-        "0x3D"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xE2487C",
+            "0x984",
+            "0x2EDC",
+            "0x3D"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xE34578",
+            "0x984",
+            "0x2EDC",
+            "0x3D"
+          ]
+        }
       ]
     },
     {
@@ -414,9 +516,26 @@
       "type": "ushort",
       "format": "{0:#,##0}",
       "offsets": [
-        "0xE340B0",
-        "0xEC",
-        "0x1364"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xE243B4",
+            "0xEC",
+            "0x1364"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xE340B0",
+            "0xEC",
+            "0x1364"
+          ]
+        }
       ]
     },
     {
@@ -427,8 +546,24 @@
         "$ref": "YesNo"
       },
       "offsets": [
-        "0xDB1794",
-        "0x338"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA1934",
+            "0x2F8"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB1794",
+            "0x338"
+          ]
+        }
       ]
     },
     {
@@ -439,8 +574,24 @@
         "$ref": "items"
       },
       "offsets": [
-        "0xDB1794",
-        "0xEFC"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA1934",
+            "0xEBC"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB1794",
+            "0xEFC"
+          ]
+        }
       ]
     },
     {
@@ -451,8 +602,24 @@
         "$ref": "items"
       },
       "offsets": [
-        "0xDB1794",
-        "0xF78"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA1934",
+            "0xF38"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB1794",
+            "0xF78"
+          ]
+        }
       ]
     },
     {
@@ -463,8 +630,24 @@
         "$ref": "YesNo"
       },
       "offsets": [
-        "0xDB1794",
-        "0xDF8"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA1934",
+            "0xDB8"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB1794",
+            "0xDF8"
+          ]
+        }
       ]
     },
     {
@@ -475,10 +658,28 @@
         "$ref": "menu"
       },
       "offsets": [
-        "0xDB26F0",
-        "0x84",
-        "0x4BC",
-        "0x5E4"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA2970",
+            "0x84",
+            "0x4BC",
+            "0x3A4"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB26F0",
+            "0x84",
+            "0x4BC",
+            "0x5E4"
+          ]
+        }
       ]
     },
     {
@@ -489,9 +690,26 @@
         "$ref": "items"
       },
       "offsets": [
-        "0xDB26F0",
-        "0x84",
-        "0x18"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA2970",
+            "0x84",
+            "0x18"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB26F0",
+            "0x84",
+            "0x18"
+          ]
+        }
       ]
     },
     {
@@ -502,8 +720,24 @@
         "$ref": "PauseBuff"
       },
       "offsets": [
-        "0xDB1D0C",
-        "0x53C"
+        {
+          "version": {
+            "$ref": "1.1.0"
+          },
+          "offsets": [
+            "0xDA1F8C",
+            "0x53C"
+          ]
+        },
+        {
+          "version": {
+            "$ref": "1.2.0"
+          },
+          "offsets": [
+            "0xDB1D0C",
+            "0x53C"
+          ]
+        }
       ]
     }
   ]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using AutoSplitDebugger.Config;
@@ -15,7 +16,8 @@ namespace AutoSplitDebugger.ViewModels
     public class PointerViewModel<T> : IPointerViewModel where T : struct, IParsable<T>
     {
         protected readonly ILog log = LogManager.GetLogger(nameof(PointerViewModel<T>));
-        
+
+        private bool _isInit;
         private readonly Memory _memory;
         // ReSharper disable once NotAccessedField.Local
         private readonly PointerConfig _config;
@@ -23,7 +25,7 @@ namespace AutoSplitDebugger.ViewModels
         protected Timer _changedTimer;
 
         public string Name { get; set; }
-        public int[] PointerPath { get; }
+        public int[] PointerPath { get; set; }
         public string Format { get; set; }
         public virtual bool HasValueSource { get; protected set;  }
         public virtual IValueSource ValueSource { get; set; }
@@ -47,7 +49,6 @@ namespace AutoSplitDebugger.ViewModels
             _config = config;
 
             Name = config.Name;
-            PointerPath = config.Offsets;
             Format = config.Format;
 
             if (config.IsTime)
@@ -79,13 +80,37 @@ namespace AutoSplitDebugger.ViewModels
 
         public void Refresh()
         {
-            // resolve the pointer and offsets if needed
             Address ??= _memory.ResolvePath(PointerPath);
 
             // read the value from memory
             var value = _memory.ReadMemory<T>(Address.Value);
 
             Value = value;
+        }
+
+        public bool Init()
+        {
+            if (_isInit) return true;
+
+            var offsets = _config.Offsets.FirstOrDefault(o => o.Version.Equals(_memory.ModuleVersionInfo));
+
+            if (offsets == null) return false;
+
+            // the offsets for the current game version
+            PointerPath = offsets.Offsets;
+
+            // resolve the pointer using the version-specific offsets
+            Address = _memory.ResolvePath(PointerPath);
+
+            return true;
+        }
+
+        public void Clear()
+        {
+            Address = null;
+            PointerPath = null;
+
+            _isInit = false;
         }
 
         [UsedImplicitly]
