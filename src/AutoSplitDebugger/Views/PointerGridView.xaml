@@ -56,7 +56,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Value" Width="150"
+                <DataGridTemplateColumn Header="Value" MinWidth="100" Width="*"
                                         HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}"
                                         CellStyle="{StaticResource IsChangedDataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -82,7 +82,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Display" MinWidth="200" Width="*"
+                <DataGridTemplateColumn Header="Display" MinWidth="150" Width="*"
                                         HeaderStyle="{StaticResource DefaultDataGridHeaderStyle}"
                                         CellStyle="{StaticResource IsChangedDataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
