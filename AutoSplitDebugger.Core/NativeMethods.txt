@@ -1,0 +1,18 @@
+﻿// methods
+CallNextHookEx
+CloseHandle
+GetModuleHandleW
+OpenProcess
+OpenThread
+ResumeThread
+SetWindowsHookEx
+SuspendThread
+UnhookWindowsHookEx
+
+// types
+KBDLLHOOKSTRUCT
+KF_UP
+PROCESS_ACCESS_RIGHTS
+THREAD_ACCESS_RIGHTS
+VIRTUAL_KEY
+WINDOWS_HOOK_ID

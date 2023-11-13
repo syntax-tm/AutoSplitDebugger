@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
+using AutoSplitDebugger.Core.Storage;
 using DevExpress.Mvvm.UI.Interactivity;
 
 namespace AutoSplitDebugger.Behaviors;

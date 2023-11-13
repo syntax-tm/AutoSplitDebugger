@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoSplitDebugger.Config;
+using AutoSplitDebugger.Core;
+using AutoSplitDebugger.Core.Config;
+using AutoSplitDebugger.Core.Interfaces;
+using AutoSplitDebugger.Core.Native;
 using AutoSplitDebugger.Interfaces;
 using AutoSplitDebugger.ViewModels;
 
